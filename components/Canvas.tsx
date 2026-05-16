@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AIPanel } from "./AIPanel";
 import { ExportDialog } from "./ExportDialog";
 import { Toolbar } from "./Toolbar";
+import { ParticleBackground } from "./ParticleBackground";
 
 const uiOverrides: TLUiOverrides = {
   tools(editor, tools) {
@@ -66,6 +67,8 @@ export function Canvas() {
           overrides={uiOverrides}
         />
       </div>
+
+      <ParticleBackground />
 
       <AnimatePresence>
         {showWelcome && (
