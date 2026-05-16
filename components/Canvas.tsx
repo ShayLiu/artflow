@@ -33,7 +33,8 @@ function WelcomeSplash({ onComplete }: { onComplete: () => void }) {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="text-4xl font-bold tracking-[-2px] text-shimmer"
+        className="text-5xl font-light tracking-[-2px] text-shimmer"
+        style={{ fontFamily: "var(--font-display)" }}
       >
         ArtFlow
       </motion.h1>
@@ -41,7 +42,7 @@ function WelcomeSplash({ onComplete }: { onComplete: () => void }) {
         initial={{ y: 10, opacity: 0 }}
         animate={{ y: 0, opacity: 0.4 }}
         transition={{ delay: 0.5, duration: 0.5 }}
-        className="text-sm text-[#8a8f98] mt-2 tracking-tight"
+        className="text-sm text-[#7a7470] mt-3 tracking-[0.15em] font-light uppercase"
       >
         Create with AI
       </motion.p>
@@ -95,7 +96,7 @@ export function Canvas() {
       />
 
       {/* Watermark */}
-      <div className="absolute bottom-3 left-4 z-[999] watermark text-xs font-semibold tracking-[-0.5px]">
+      <div className="absolute bottom-3 left-4 z-[999] watermark text-xs font-light tracking-[0.1em]" style={{ fontFamily: "var(--font-display)" }}>
         ArtFlow
       </div>
     </div>

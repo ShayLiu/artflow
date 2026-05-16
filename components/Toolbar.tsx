@@ -28,7 +28,7 @@ function ToolbarButton({
       transition={{ type: "spring", stiffness: 500, damping: 20 }}
       onClick={onClick}
       title={title}
-      className={`rounded-lg h-8 flex items-center justify-center text-[#8a8f98] transition-colors ${className}`}
+      className={`rounded-lg h-8 flex items-center justify-center text-[#7a7470] transition-colors ${className}`}
     >
       {children}
     </motion.button>
@@ -53,13 +53,13 @@ export function Toolbar({ editor, onAIClick, onExportClick }: ToolbarProps) {
     >
       <ToolbarButton
         onClick={() => editor?.undo()}
-        className="w-8 p-0 hover:text-foreground hover:bg-white/5"
+        className="w-8 p-0 hover:text-[#3d3a36] hover:bg-[#3d3a36]/5"
       >
         <Undo2 className="h-3.5 w-3.5" />
       </ToolbarButton>
       <ToolbarButton
         onClick={() => editor?.redo()}
-        className="w-8 p-0 hover:text-foreground hover:bg-white/5"
+        className="w-8 p-0 hover:text-[#3d3a36] hover:bg-[#3d3a36]/5"
       >
         <Redo2 className="h-3.5 w-3.5" />
       </ToolbarButton>
@@ -68,12 +68,12 @@ export function Toolbar({ editor, onAIClick, onExportClick }: ToolbarProps) {
         initial={{ opacity: 0, scaleY: 0 }}
         animate={{ opacity: 1, scaleY: 1 }}
         transition={{ delay: 0.5 }}
-        className="w-px h-4 bg-white/8 mx-1"
+        className="w-px h-4 bg-[#3d3a36]/10 mx-1"
       />
 
       <ToolbarButton
         onClick={clearDrawings}
-        className="px-2.5 gap-1.5 hover:text-foreground hover:bg-white/5"
+        className="px-2.5 gap-1.5 hover:text-[#3d3a36] hover:bg-[#3d3a36]/5"
         title="清除所有画笔痕迹"
       >
         <Eraser className="h-3.5 w-3.5" />
@@ -84,14 +84,14 @@ export function Toolbar({ editor, onAIClick, onExportClick }: ToolbarProps) {
         initial={{ opacity: 0, scaleY: 0 }}
         animate={{ opacity: 1, scaleY: 1 }}
         transition={{ delay: 0.6 }}
-        className="w-px h-4 bg-white/8 mx-1"
+        className="w-px h-4 bg-[#3d3a36]/10 mx-1"
       />
 
       <ToolbarButton
         onClick={onAIClick}
-        className="px-2.5 gap-1.5 hover:text-[#828fff] hover:bg-[#5e6ad2]/10"
+        className="rounded-lg h-8 px-2.5 text-[#7a7470] hover:text-[#8b7e74] hover:bg-[#8b7e74]/10 gap-1.5"
       >
-        <Sparkles className="h-3.5 w-3.5 text-[#5e6ad2] sparkle-icon" />
+        <Sparkles className="h-3.5 w-3.5 text-[#8b7e74] sparkle-icon" />
         <span className="text-xs font-medium tracking-tight">AI 创作</span>
       </ToolbarButton>
 
@@ -99,12 +99,12 @@ export function Toolbar({ editor, onAIClick, onExportClick }: ToolbarProps) {
         initial={{ opacity: 0, scaleY: 0 }}
         animate={{ opacity: 1, scaleY: 1 }}
         transition={{ delay: 0.7 }}
-        className="w-px h-4 bg-white/8 mx-1"
+        className="w-px h-4 bg-[#3d3a36]/10 mx-1"
       />
 
       <ToolbarButton
         onClick={onExportClick}
-        className="px-2.5 gap-1.5 hover:text-foreground hover:bg-white/5"
+        className="px-2.5 gap-1.5 hover:text-[#3d3a36] hover:bg-[#3d3a36]/5"
       >
         <Download className="h-3.5 w-3.5" />
         <span className="text-xs font-medium tracking-tight">导出</span>

@@ -153,7 +153,7 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
         >
-          <Sparkles className="h-4 w-4 text-[#5e6ad2] sparkle-icon" />
+          <Sparkles className="h-4 w-4 text-[#8b7e74] sparkle-icon" />
           <h3 className="text-sm font-semibold tracking-tight text-foreground">AI 创作</h3>
         </motion.div>
         <motion.button
@@ -161,7 +161,7 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
           whileTap={{ scale: 0.8 }}
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
           onClick={onClose}
-          className="p-1 rounded-md hover:bg-white/5 text-[#62666d] hover:text-foreground transition-colors"
+          className="p-1 rounded-md hover:bg-[#3d3a36]/5 text-[#7a7470] hover:text-[#3d3a36] transition-colors"
         >
           <X className="h-3.5 w-3.5" />
         </motion.button>
@@ -171,14 +171,14 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.15 }}
-        className="text-[11px] text-[#62666d] mb-3"
+        className="text-[11px] text-[#7a7470] mb-3"
       >
         {hasSelection ? "基于选中内容重绘" : "直接生成新图片到画布"}
       </motion.p>
 
       {/* Style Selection */}
       <div className="mb-3">
-        <label className="text-[11px] font-medium text-[#8a8f98] mb-1.5 block tracking-wide uppercase">画风</label>
+        <label className="text-[11px] font-medium text-[#7a7470] mb-1.5 block tracking-wide uppercase">画风</label>
         <div className="grid grid-cols-4 gap-1">
           {STYLES.map((s, i) => (
             <motion.button
@@ -191,8 +191,8 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
               onClick={() => setStyle(s.value)}
               className={`text-[10px] py-1.5 px-1 rounded-md border transition-colors ${
                 style === s.value
-                  ? "border-[#5e6ad2]/50 bg-[#5e6ad2]/10 text-[#828fff]"
-                  : "border-transparent hover:border-white/8 text-[#8a8f98] hover:text-foreground hover:bg-white/3"
+                  ? "border-[#8b7e74]/40 bg-[#8b7e74]/10 text-[#6b5e54]"
+                  : "border-transparent hover:border-[#3d3a36]/10 text-[#7a7470] hover:text-[#3d3a36] hover:bg-[#3d3a36]/3"
               }`}
             >
               <motion.span
@@ -210,7 +210,7 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
 
       {/* Size Selection */}
       <div className="mb-3">
-        <label className="text-[11px] font-medium text-[#8a8f98] mb-1.5 block tracking-wide uppercase">尺寸</label>
+        <label className="text-[11px] font-medium text-[#7a7470] mb-1.5 block tracking-wide uppercase">尺寸</label>
         <div className="flex gap-1">
           {SIZES.map((s) => (
             <motion.button
@@ -220,8 +220,8 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
               onClick={() => setSize(s.value)}
               className={`flex-1 text-[11px] py-1.5 rounded-md border transition-colors ${
                 size === s.value
-                  ? "border-[#5e6ad2]/50 bg-[#5e6ad2]/10 text-[#828fff]"
-                  : "border-transparent hover:border-white/8 text-[#8a8f98] hover:text-foreground hover:bg-white/3"
+                  ? "border-[#8b7e74]/40 bg-[#8b7e74]/10 text-[#6b5e54]"
+                  : "border-transparent hover:border-[#3d3a36]/10 text-[#7a7470] hover:text-[#3d3a36] hover:bg-[#3d3a36]/3"
               }`}
             >
               {s.label}
@@ -236,14 +236,14 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="描述你想要的画面..."
-          className="w-full h-[72px] px-3 py-2 rounded-lg bg-white/3 border border-white/6 text-sm text-foreground resize-none focus:outline-none focus:ring-1 focus:ring-[#5e6ad2]/50 placeholder:text-[#62666d] transition-all"
+          className="w-full h-[72px] px-3 py-2 rounded-lg bg-[#3d3a36]/3 border border-[#3d3a36]/8 text-sm text-foreground resize-none focus:outline-none focus:ring-1 focus:ring-[#8b7e74]/40 placeholder:text-[#7a7470]/60 transition-all"
         />
         <motion.button
           whileHover={{ scale: 1.15, rotate: 15 }}
           whileTap={{ scale: 0.85 }}
           onClick={enhancePrompt}
           disabled={enhancing || !prompt.trim()}
-          className="absolute right-2 bottom-2 p-1 rounded-md hover:bg-[#5e6ad2]/10 text-[#62666d] hover:text-[#828fff] transition-colors disabled:opacity-30"
+          className="absolute right-2 bottom-2 p-1 rounded-md hover:bg-[#8b7e74]/10 text-[#7a7470] hover:text-[#6b5e54] transition-colors disabled:opacity-30"
           title="AI 优化描述"
         >
           {enhancing ? (
@@ -253,7 +253,7 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
           )}
         </motion.button>
       </div>
-      <p className="text-[10px] text-[#62666d] mb-2 text-right">
+      <p className="text-[10px] text-[#7a7470] mb-2 text-right">
         ✨ 优化描述
       </p>
 
@@ -263,16 +263,16 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
           type="checkbox"
           checked={clearBrush}
           onChange={(e) => setClearBrush(e.target.checked)}
-          className="rounded border-white/10 bg-white/5 accent-[#5e6ad2] h-3.5 w-3.5"
+          className="rounded border-[#3d3a36]/10 bg-[#3d3a36]/3 accent-[#8b7e74] h-3.5 w-3.5"
         />
-        <span className="text-[11px] text-[#8a8f98] group-hover:text-foreground transition-colors">发送前去除画笔痕迹</span>
+        <span className="text-[11px] text-[#7a7470] group-hover:text-[#3d3a36] transition-colors">发送前去除画笔痕迹</span>
       </label>
 
       {error && (
         <motion.p
           initial={{ opacity: 0, x: -8 }}
           animate={{ opacity: 1, x: 0 }}
-          className="text-xs text-[#e5484d] mb-2"
+          className="text-xs text-[#c27171] mb-2"
         >
           {error}
         </motion.p>
@@ -284,7 +284,7 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
         onClick={handleGenerate}
         disabled={loading || !prompt.trim()}
         className={`w-full h-8 rounded-lg text-white text-xs font-medium tracking-tight transition-all disabled:opacity-40 flex items-center justify-center ${
-          loading ? "gradient-flow" : "bg-[#5e6ad2] hover:bg-[#828fff]"
+          loading ? "gradient-flow" : "bg-[#8b7e74] hover:bg-[#6b5e54]"
         }`}
       >
         {loading ? (
