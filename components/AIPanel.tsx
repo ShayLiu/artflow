@@ -35,6 +35,7 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [enhancing, setEnhancing] = useState(false);
+  const [clearBrush, setClearBrush] = useState(true);
 
   const hasSelection = editor.getSelectedShapes().length > 0;
 
@@ -64,11 +65,17 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
 
       if (hasSelection) {
         const selectedShapes = editor.getSelectedShapes();
-        const { blob } = await editor.toImage(
-          selectedShapes.map((s) => s.id),
-          { format: "png", background: true }
-        );
-        base64 = await blobToBase64(blob);
+        const exportIds = clearBrush
+          ? selectedShapes.filter((s) => s.type !== "draw").map((s) => s.id)
+          : selectedShapes.map((s) => s.id);
+
+        if (exportIds.length > 0) {
+          const { blob } = await editor.toImage(exportIds, {
+            format: "png",
+            background: true,
+          });
+          base64 = await blobToBase64(blob);
+        }
       }
 
       const fullPrompt = style ? `${prompt}. ${style}` : prompt;
@@ -215,9 +222,20 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
           )}
         </button>
       </div>
-      <p className="text-[10px] text-muted-foreground/60 mb-3 text-right">
+      <p className="text-[10px] text-muted-foreground/60 mb-2 text-right">
         点击 ✨ 按钮可 AI 优化描述
       </p>
+
+      {/* Clear brush option */}
+      <label className="flex items-center gap-2 mb-3 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={clearBrush}
+          onChange={(e) => setClearBrush(e.target.checked)}
+          className="rounded border-border accent-primary"
+        />
+        <span className="text-xs text-muted-foreground">发送前去除画笔痕迹</span>
+      </label>
 
       {error && <p className="text-sm text-destructive mb-2">{error}</p>}
 

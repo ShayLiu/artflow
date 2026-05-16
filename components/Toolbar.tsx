@@ -2,7 +2,7 @@
 
 import { Editor } from "tldraw";
 import { motion } from "framer-motion";
-import { Sparkles, Download, Undo2, Redo2 } from "lucide-react";
+import { Sparkles, Download, Undo2, Redo2, Eraser } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ToolbarProps {
@@ -12,6 +12,14 @@ interface ToolbarProps {
 }
 
 export function Toolbar({ editor, onAIClick, onExportClick }: ToolbarProps) {
+  const clearDrawings = () => {
+    if (!editor) return;
+    const shapes = editor.getCurrentPageShapes();
+    const drawShapes = shapes.filter((s) => s.type === "draw");
+    if (drawShapes.length === 0) return;
+    editor.deleteShapes(drawShapes.map((s) => s.id));
+  };
+
   return (
     <motion.div
       initial={{ y: -20, opacity: 0 }}
@@ -41,11 +49,24 @@ export function Toolbar({ editor, onAIClick, onExportClick }: ToolbarProps) {
       <Button
         variant="ghost"
         size="sm"
+        onClick={clearDrawings}
+        className="rounded-xl hover:bg-accent gap-2"
+        title="清除所有画笔痕迹"
+      >
+        <Eraser className="h-4 w-4" />
+        <span className="text-sm font-medium">清除画笔</span>
+      </Button>
+
+      <div className="w-px h-6 bg-border/50 mx-1" />
+
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={onAIClick}
         className="rounded-xl hover:bg-accent gap-2"
       >
         <Sparkles className="h-4 w-4 text-primary" />
-        <span className="text-sm font-medium">AI 重绘</span>
+        <span className="text-sm font-medium">AI 创作</span>
       </Button>
 
       <div className="w-px h-6 bg-border/50 mx-1" />
