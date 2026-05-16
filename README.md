@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ArtFlow
+
+A beautiful canvas-based image editor with AI-powered creation.
+
+## Features
+
+- Infinite canvas with drawing tools (pen, shapes, text, arrows)
+- Paste images from clipboard (Cmd+V / Ctrl+V)
+- AI-powered image inpainting via ZhipuAI CogView
+- Export with custom aspect ratios (1:1, 4:3, 16:9, free)
+- Warm beige aesthetic with glassmorphism UI
+
+## Tech Stack
+
+- Next.js + TypeScript
+- tldraw (canvas engine)
+- Tailwind CSS + shadcn/ui
+- ZhipuAI CogView API
+- Docker ready for deployment
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
+cp .env.local.example .env.local
+# Edit .env.local with your ZHIPU_API_KEY
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+docker build -t artflow .
+docker run -p 3000:3000 --env-file .env.local artflow
+```
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
