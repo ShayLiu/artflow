@@ -80,22 +80,22 @@ export function ExportDialog({ editor, open, onOpenChange }: ExportDialogProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-white/90 backdrop-blur-xl border-border/50 rounded-2xl">
+      <DialogContent className="sm:max-w-sm glass-panel border-white/6 rounded-xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Download className="h-5 w-5" />
+          <DialogTitle className="flex items-center gap-2 text-sm font-semibold tracking-tight">
+            <Download className="h-4 w-4 text-[#5e6ad2]" />
             导出画布
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">画面比例</label>
+        <div className="space-y-3 py-3">
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-medium text-[#8a8f98] tracking-wide uppercase">画面比例</label>
             <Select value={ratio} onValueChange={(v) => v && setRatio(v)}>
-              <SelectTrigger className="rounded-xl">
+              <SelectTrigger className="rounded-lg bg-white/3 border-white/6 h-8 text-xs">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="glass-panel border-white/6 rounded-lg">
                 {RATIOS.map((r) => (
                   <SelectItem key={r.value} value={r.value}>
                     {r.label}
@@ -105,13 +105,13 @@ export function ExportDialog({ editor, open, onOpenChange }: ExportDialogProps) 
             </Select>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">导出格式</label>
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-medium text-[#8a8f98] tracking-wide uppercase">导出格式</label>
             <Select value={format} onValueChange={(v) => v && setFormat(v as any)}>
-              <SelectTrigger className="rounded-xl">
+              <SelectTrigger className="rounded-lg bg-white/3 border-white/6 h-8 text-xs">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="glass-panel border-white/6 rounded-lg">
                 {FORMATS.map((f) => (
                   <SelectItem key={f.value} value={f.value}>
                     {f.label}
@@ -121,16 +121,16 @@ export function ExportDialog({ editor, open, onOpenChange }: ExportDialogProps) 
             </Select>
           </div>
 
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[11px] text-[#62666d]">
             选中元素只导出选中部分，未选中则导出全部画布内容
           </p>
 
           <Button
             onClick={handleExport}
             disabled={exporting}
-            className="w-full rounded-xl bg-primary hover:bg-primary/90"
+            className="w-full h-8 rounded-lg bg-[#5e6ad2] hover:bg-[#828fff] text-white text-xs font-medium tracking-tight transition-colors"
           >
-            <Download className="h-4 w-4 mr-2" />
+            <Download className="h-3.5 w-3.5 mr-1.5" />
             {exporting ? "导出中..." : "导出"}
           </Button>
         </div>

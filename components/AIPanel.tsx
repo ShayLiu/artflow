@@ -141,40 +141,41 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
 
   return (
     <motion.div
-      initial={{ x: 20, opacity: 0 }}
+      initial={{ x: 16, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ x: 20, opacity: 0 }}
-      className="absolute top-20 right-4 z-[1000] w-80 rounded-2xl bg-white/80 backdrop-blur-xl border border-border/50 shadow-xl shadow-black/5 p-5 max-h-[calc(100vh-120px)] overflow-y-auto"
+      exit={{ x: 16, opacity: 0 }}
+      transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="absolute top-14 right-3 z-[1000] w-72 rounded-xl glass-panel p-4 max-h-[calc(100vh-80px)] overflow-y-auto"
     >
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold text-foreground">AI 创作</h3>
+          <Sparkles className="h-4 w-4 text-[#5e6ad2]" />
+          <h3 className="text-sm font-semibold tracking-tight text-foreground">AI 创作</h3>
         </div>
-        <Button variant="ghost" size="sm" onClick={onClose} className="rounded-xl">
-          <X className="h-4 w-4" />
-        </Button>
+        <button onClick={onClose} className="p-1 rounded-md hover:bg-white/5 text-[#62666d] hover:text-foreground transition-colors">
+          <X className="h-3.5 w-3.5" />
+        </button>
       </div>
 
-      <p className="text-xs text-muted-foreground mb-3">
-        {hasSelection ? "基于选中内容重绘" : "直接生成新图片"}
+      <p className="text-[11px] text-[#62666d] mb-3">
+        {hasSelection ? "基于选中内容重绘" : "直接生成新图片到画布"}
       </p>
 
       {/* Style Selection */}
       <div className="mb-3">
-        <label className="text-xs font-medium text-muted-foreground mb-2 block">画风</label>
-        <div className="grid grid-cols-4 gap-1.5">
+        <label className="text-[11px] font-medium text-[#8a8f98] mb-1.5 block tracking-wide uppercase">画风</label>
+        <div className="grid grid-cols-4 gap-1">
           {STYLES.map((s) => (
             <button
               key={s.label}
               onClick={() => setStyle(s.value)}
-              className={`text-xs py-1.5 px-1 rounded-lg border transition-all ${
+              className={`text-[10px] py-1.5 px-1 rounded-md border transition-all ${
                 style === s.value
-                  ? "border-primary bg-primary/10 text-primary font-medium"
-                  : "border-border/50 hover:border-primary/30 text-muted-foreground"
+                  ? "border-[#5e6ad2]/50 bg-[#5e6ad2]/10 text-[#828fff]"
+                  : "border-transparent hover:border-white/8 text-[#8a8f98] hover:text-foreground hover:bg-white/3"
               }`}
             >
-              <span className="block text-base mb-0.5">{s.emoji}</span>
+              <span className="block text-sm mb-0.5">{s.emoji}</span>
               {s.label}
             </button>
           ))}
@@ -183,16 +184,16 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
 
       {/* Size Selection */}
       <div className="mb-3">
-        <label className="text-xs font-medium text-muted-foreground mb-2 block">尺寸</label>
-        <div className="flex gap-1.5">
+        <label className="text-[11px] font-medium text-[#8a8f98] mb-1.5 block tracking-wide uppercase">尺寸</label>
+        <div className="flex gap-1">
           {SIZES.map((s) => (
             <button
               key={s.value}
               onClick={() => setSize(s.value)}
-              className={`flex-1 text-xs py-1.5 rounded-lg border transition-all ${
+              className={`flex-1 text-[11px] py-1.5 rounded-md border transition-all ${
                 size === s.value
-                  ? "border-primary bg-primary/10 text-primary font-medium"
-                  : "border-border/50 hover:border-primary/30 text-muted-foreground"
+                  ? "border-[#5e6ad2]/50 bg-[#5e6ad2]/10 text-[#828fff]"
+                  : "border-transparent hover:border-white/8 text-[#8a8f98] hover:text-foreground hover:bg-white/3"
               }`}
             >
               {s.label}
@@ -207,12 +208,12 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="描述你想要的画面..."
-          className="w-full h-20 px-3 py-2 rounded-xl bg-muted/50 border border-border/50 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground/60"
+          className="w-full h-[72px] px-3 py-2 rounded-lg bg-white/3 border border-white/6 text-sm text-foreground resize-none focus:outline-none focus:ring-1 focus:ring-[#5e6ad2]/50 placeholder:text-[#62666d] transition-all"
         />
         <button
           onClick={enhancePrompt}
           disabled={enhancing || !prompt.trim()}
-          className="absolute right-2 bottom-2 p-1.5 rounded-lg hover:bg-accent text-muted-foreground hover:text-primary transition-colors disabled:opacity-40"
+          className="absolute right-2 bottom-2 p-1 rounded-md hover:bg-[#5e6ad2]/10 text-[#62666d] hover:text-[#828fff] transition-colors disabled:opacity-30"
           title="AI 优化描述"
         >
           {enhancing ? (
@@ -222,36 +223,36 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
           )}
         </button>
       </div>
-      <p className="text-[10px] text-muted-foreground/60 mb-2 text-right">
-        点击 ✨ 按钮可 AI 优化描述
+      <p className="text-[10px] text-[#62666d] mb-2 text-right">
+        ✨ 优化描述
       </p>
 
       {/* Clear brush option */}
-      <label className="flex items-center gap-2 mb-3 cursor-pointer">
+      <label className="flex items-center gap-2 mb-3 cursor-pointer group">
         <input
           type="checkbox"
           checked={clearBrush}
           onChange={(e) => setClearBrush(e.target.checked)}
-          className="rounded border-border accent-primary"
+          className="rounded border-white/10 bg-white/5 accent-[#5e6ad2] h-3.5 w-3.5"
         />
-        <span className="text-xs text-muted-foreground">发送前去除画笔痕迹</span>
+        <span className="text-[11px] text-[#8a8f98] group-hover:text-foreground transition-colors">发送前去除画笔痕迹</span>
       </label>
 
-      {error && <p className="text-sm text-destructive mb-2">{error}</p>}
+      {error && <p className="text-xs text-[#e5484d] mb-2">{error}</p>}
 
       <Button
         onClick={handleGenerate}
         disabled={loading || !prompt.trim()}
-        className="w-full rounded-xl bg-primary hover:bg-primary/90"
+        className="w-full h-8 rounded-lg bg-[#5e6ad2] hover:bg-[#828fff] text-white text-xs font-medium tracking-tight transition-colors disabled:opacity-40"
       >
         {loading ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
             生成中...
           </>
         ) : (
           <>
-            <Sparkles className="h-4 w-4 mr-2" />
+            <Sparkles className="h-3.5 w-3.5 mr-1.5" />
             {hasSelection ? "重绘选中区域" : "生成图片"}
           </>
         )}
