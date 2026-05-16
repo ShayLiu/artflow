@@ -12,27 +12,32 @@ export async function POST(request: NextRequest) {
   try {
     const { image, prompt } = await request.json();
 
-    if (!image || !prompt) {
+    if (!prompt) {
       return NextResponse.json(
-        { error: "缺少图片或描述" },
+        { error: "缺少描述" },
         { status: 400 }
       );
     }
 
+    const body: Record<string, string> = {
+      model: "cogview-4",
+      prompt: prompt,
+      size: "1024x1024",
+    };
+
+    if (image) {
+      body.image_url = `data:image/png;base64,${image}`;
+    }
+
     const response = await fetch(
-      "https://open.bigmodel.cn/api/paas/v4/images/edit",
+      "https://open.bigmodel.cn/api/paas/v4/images/generations",
       {
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          model: "cogview-4",
-          image: image,
-          prompt: prompt,
-          size: "1024x1024",
-        }),
+        body: JSON.stringify(body),
       }
     );
 
