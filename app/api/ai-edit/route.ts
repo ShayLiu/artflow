@@ -90,36 +90,55 @@ async function handleGenerate(
     reqBody.image_url = `data:image/png;base64,${image}`;
   }
 
-  const response = await fetch(
-    "https://open.bigmodel.cn/api/paas/v4/images/generations",
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reqBody),
+  const maxRetries = 3;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const response = await fetch(
+      "https://open.bigmodel.cn/api/paas/v4/images/generations",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reqBody),
+      }
+    );
+
+    if (response.status === 429) {
+      if (attempt < maxRetries - 1) {
+        await new Promise((r) => setTimeout(r, (attempt + 1) * 3000));
+        continue;
+      }
+      return NextResponse.json(
+        { error: "请求太频繁，请稍后再试（约10秒后重试）" },
+        { status: 429 }
+      );
     }
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("ZhipuAI API error:", errorData);
+      return NextResponse.json(
+        { error: `智谱AI 返回错误: ${response.status}` },
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
+    const imageUrl = data?.data?.[0]?.url;
+
+    if (!imageUrl) {
+      return NextResponse.json(
+        { error: "AI 未返回有效图片" },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ imageUrl });
+  }
+
+  return NextResponse.json(
+    { error: "请求失败，请稍后再试" },
+    { status: 500 }
   );
-
-  if (!response.ok) {
-    const errorData = await response.text();
-    console.error("ZhipuAI API error:", errorData);
-    return NextResponse.json(
-      { error: `智谱AI 返回错误: ${response.status}` },
-      { status: response.status }
-    );
-  }
-
-  const data = await response.json();
-  const imageUrl = data?.data?.[0]?.url;
-
-  if (!imageUrl) {
-    return NextResponse.json(
-      { error: "AI 未返回有效图片" },
-      { status: 500 }
-    );
-  }
-
-  return NextResponse.json({ imageUrl });
 }
