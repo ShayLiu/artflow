@@ -99,6 +99,9 @@
 
 .tl-container {
   --color-background: #e8e0d8 !important;
+  --tl-color-selected: #9b8e84 !important;
+  --tl-color-selected-contrast: #faf8f6 !important;
+  --tl-color-primary: #8b7e74 !important;
 }
 
 /* tldraw UI融合莫兰迪背景 */
@@ -157,17 +160,21 @@
 }
 
 .tlui-button[data-isactive="true"] {
-  background: rgba(139, 126, 116, 0.15) !important;
+  background: rgba(139, 126, 116, 0.12) !important;
   border-radius: 10px !important;
-  animation: ripple 1.5s ease-out infinite !important;
 }
 
-.tlui-button__icon {
+/* 只对工具栏图标改色，不影响颜色选择器 */
+.tlui-main-toolbar .tlui-icon,
+.tlui-menu-zone .tlui-icon {
   color: #6b5e54 !important;
+  transition: transform 0.2s ease, color 0.2s ease !important;
 }
 
-.tlui-button:hover .tlui-button__icon {
+.tlui-main-toolbar .tlui-button:hover .tlui-icon,
+.tlui-menu-zone .tlui-button:hover .tlui-icon {
   color: #3d3a36 !important;
+  transform: scale(1.1) !important;
 }
 
 /* 快捷面板 */
@@ -194,13 +201,10 @@
   border-radius: 14px !important;
 }
 
-/* 小图标过渡 */
-.tlui-icon {
-  transition: transform 0.2s ease, color 0.2s ease !important;
-}
-
-.tlui-button:hover .tlui-icon {
-  transform: scale(1.1) !important;
+/* 样式面板里的颜色选择器保持原色 */
+.tlui-style-panel .tlui-button[data-isactive="true"] {
+  background: rgba(139, 126, 116, 0.12) !important;
+  border-radius: 8px !important;
 }
 .glass-panel {
   background: rgba(250, 248, 246, 0.72);
