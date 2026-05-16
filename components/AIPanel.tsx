@@ -1,13 +1,14 @@
 "use client";
 
 import { Editor } from "tldraw";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2, Sparkles, Wand2 } from "lucide-react";
 
 interface AIPanelProps {
   editor: Editor;
   onClose: () => void;
+  masterStyle?: string;
 }
 
 const STYLES = [
@@ -39,76 +40,15 @@ const RATIOS = [
   { label: "3:2", w: 1024, h: 682 },
 ];
 
-const MASTERS = [
-  {
-    name: "莫兰迪",
-    en: "Giorgio Morandi",
-    prompt: "in the style of Giorgio Morandi, muted earthy tones, soft light, still life composition, quiet elegance, desaturated palette",
-    color: "#c4bbb3",
-    preview: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Giorgio_Morandi_-_Natura_Morta_1956.jpg/300px-Giorgio_Morandi_-_Natura_Morta_1956.jpg",
-  },
-  {
-    name: "毕加索",
-    en: "Pablo Picasso",
-    prompt: "in the style of Pablo Picasso, cubism, geometric fragmentation, multiple viewpoints, bold outlines, abstract figurative",
-    color: "#a08b8b",
-    preview: "https://upload.wikimedia.org/wikipedia/en/4/4c/Les_Demoiselles_d%27Avignon.jpg",
-  },
-  {
-    name: "莫奈",
-    en: "Claude Monet",
-    prompt: "in the style of Claude Monet, impressionism, soft brushstrokes, natural light, plein air, water reflections, atmospheric",
-    color: "#8fa08b",
-    preview: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg/300px-Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg",
-  },
-  {
-    name: "梵高",
-    en: "Vincent van Gogh",
-    prompt: "in the style of Vincent van Gogh, post-impressionism, swirling brushstrokes, vivid colors, expressive texture, starry night",
-    color: "#8b8ea0",
-    preview: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/300px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
-  },
-  {
-    name: "草间弥生",
-    en: "Yayoi Kusama",
-    prompt: "in the style of Yayoi Kusama, infinity dots, polka dot patterns, bold repetition, vivid red and white, psychedelic",
-    color: "#c27171",
-    preview: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Yayoi_Kusama_-_Ascension_of_Polkadots_on_the_Trees_-_Espoo_4.jpg/300px-Yayoi_Kusama_-_Ascension_of_Polkadots_on_the_Trees_-_Espoo_4.jpg",
-  },
-  {
-    name: "浮世绘",
-    en: "Katsushika Hokusai",
-    prompt: "in the style of Hokusai, Japanese ukiyo-e woodblock print, The Great Wave, traditional Japanese art, detailed linework",
-    color: "#7a8a9a",
-    preview: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Tsunami_by_hokusai_19th_century.jpg/300px-Tsunami_by_hokusai_19th_century.jpg",
-  },
-  {
-    name: "达利",
-    en: "Salvador Dalí",
-    prompt: "in the style of Salvador Dalí, surrealism, melting clocks, dreamscape, hyper-detailed, bizarre juxtaposition",
-    color: "#b0a090",
-    preview: "https://upload.wikimedia.org/wikipedia/en/d/dd/The_Persistence_of_Memory.jpg",
-  },
-  {
-    name: "克里姆特",
-    en: "Gustav Klimt",
-    prompt: "in the style of Gustav Klimt, Art Nouveau, gold leaf, ornamental patterns, sensual figures, decorative mosaic",
-    color: "#c8b060",
-    preview: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg/300px-The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg",
-  },
-];
-
-export function AIPanel({ editor, onClose }: AIPanelProps) {
+export function AIPanel({ editor, onClose, masterStyle = "" }: AIPanelProps) {
   const [prompt, setPrompt] = useState("");
   const [style, setStyle] = useState("");
-  const [masterStyle, setMasterStyle] = useState("");
   const [ratio, setRatio] = useState(RATIOS[0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [enhancing, setEnhancing] = useState(false);
   const [clearBrush, setClearBrush] = useState(true);
-  const styleScrollRef = useRef<HTMLDivElement>(null);
-  const masterScrollRef = useRef<HTMLDivElement>(null);
+  const styleScrollRef = null;
 
   const hasSelection = editor.getSelectedShapes().length > 0;
 
@@ -205,47 +145,6 @@ export function AIPanel({ editor, onClose }: AIPanelProps) {
       <p className="text-[11px] text-[#7a7470] mb-3">
         {hasSelection ? "基于选中内容重绘" : "直接生成新图片到画布"}
       </p>
-
-      {/* Master Styles - horizontal scroll */}
-      <div className="mb-3">
-        <label className="text-[11px] font-medium text-[#7a7470] mb-2 block tracking-wide uppercase"
-          style={{ fontFamily: "var(--font-display)", letterSpacing: "0.15em" }}>大师风格</label>
-        <div ref={masterScrollRef} className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" style={{ scrollbarWidth: "none" }}>
-          {MASTERS.map((m, i) => (
-            <motion.button
-              key={m.name}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.04 * i, type: "spring", stiffness: 250, damping: 20 }}
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setMasterStyle(masterStyle === m.prompt ? "" : m.prompt)}
-              className={`flex-shrink-0 w-20 rounded-xl overflow-hidden border-2 transition-all ${
-                masterStyle === m.prompt
-                  ? "border-[#8b7e74] shadow-md shadow-[#8b7e74]/20"
-                  : "border-transparent hover:border-[#8b7e74]/20"
-              }`}
-            >
-              <div className="w-20 h-16 bg-cover bg-center" style={{
-                backgroundColor: m.color,
-                backgroundImage: `url(${m.preview})`,
-                backgroundSize: "cover",
-              }}>
-                <motion.div
-                  className="w-full h-full"
-                  animate={masterStyle === m.prompt ? { opacity: [0.3, 0, 0.3] } : { opacity: 0 }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  style={{ background: `radial-gradient(circle, ${m.color}88 0%, transparent 70%)` }}
-                />
-              </div>
-              <div className="px-1 py-1.5 text-center" style={{ backgroundColor: `${m.color}20` }}>
-                <p className="text-[10px] font-medium text-[#3d3a36]" style={{ fontFamily: "var(--font-display)" }}>{m.name}</p>
-                <p className="text-[8px] text-[#7a7470] truncate">{m.en}</p>
-              </div>
-            </motion.button>
-          ))}
-        </div>
-      </div>
 
       {/* Styles - horizontal scroll */}
       <div className="mb-3">

@@ -8,6 +8,7 @@ import { AIPanel } from "./AIPanel";
 import { ExportDialog } from "./ExportDialog";
 import { Toolbar } from "./Toolbar";
 import { ParticleBackground } from "./ParticleBackground";
+import { MastersPanel } from "./MastersPanel";
 
 const uiOverrides: TLUiOverrides = {
   tools(editor, tools) {
@@ -55,6 +56,7 @@ export function Canvas() {
   const [showAI, setShowAI] = useState(false);
   const [showExport, setShowExport] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [masterStyle, setMasterStyle] = useState("");
 
   const handleMount = useCallback((editor: Editor) => {
     setEditor(editor);
@@ -83,9 +85,19 @@ export function Canvas() {
         onExportClick={() => setShowExport(true)}
       />
 
+      {/* Left side: Masters Panel */}
+      <MastersPanel
+        selectedMaster={masterStyle}
+        onSelectMaster={setMasterStyle}
+      />
+
       <AnimatePresence>
         {showAI && editor && (
-          <AIPanel editor={editor} onClose={() => setShowAI(false)} />
+          <AIPanel
+            editor={editor}
+            onClose={() => setShowAI(false)}
+            masterStyle={masterStyle}
+          />
         )}
       </AnimatePresence>
 
@@ -96,7 +108,7 @@ export function Canvas() {
       />
 
       {/* Watermark */}
-      <div className="absolute bottom-3 left-4 z-[999] watermark text-xs font-light tracking-[0.1em]" style={{ fontFamily: "var(--font-display)" }}>
+      <div className="absolute bottom-3 left-[88px] z-[999] watermark text-xs font-light tracking-[0.1em]" style={{ fontFamily: "var(--font-display)" }}>
         ArtFlow
       </div>
     </div>
